@@ -11,21 +11,25 @@ import path from 'path';
 
 export const config: VendureConfig = {
     apiOptions: {
-        port: 3000,
+        port: Number(process.env.PORT),
         adminApiPath: 'admin-api',
-        adminApiPlayground: {
+        adminApiPlayground: process.env.PLAYGROUND_ENABLED == 'true' ? 
+        {
             settings: {
                 'request.credentials': 'include',
             } as any,
-        },// turn this off for production
-        adminApiDebug: true, // turn this off for production
+        }
+        : false,
+        adminApiDebug: process.env.PLAYGROUND_ENABLED == 'true', 
         shopApiPath: 'shop-api',
-        shopApiPlayground: {
+        shopApiPlayground: process.env.PLAYGROUND_ENABLED == 'true' ? 
+        {
             settings: {
                 'request.credentials': 'include',
             } as any,
-        },// turn this off for production
-        shopApiDebug: true,// turn this off for production
+        }
+        : false,
+        shopApiDebug: process.env.PLAYGROUND_ENABLED == 'true',
     },
     authOptions: {
         superadminCredentials: {
@@ -38,12 +42,14 @@ export const config: VendureConfig = {
     },
     dbConnectionOptions: {
         type: 'postgres',
-        synchronize: true, // turn this off for production
+        synchronize: process.env.SYNCRONIZE_DB == 'true',
         logging: false,
-        url: 'postgres://fcykjekadzovtd:7df01e7084962cfb24de2eaa59b809e1de16145872e6d2d5a07765b0e69ec9cf@ec2-34-206-148-196.compute-1.amazonaws.com:5432/d4knt5louna27e',
-        ssl: {
+        url: process.env.DATABASE_URL,
+        ssl: process.env.SSL_ENABLED == 'true' ? 
+        {
             rejectUnauthorized: false
-        },
+        } 
+        : false,
         migrations: [path.join(__dirname, '../migrations/*.ts')],
     },
     paymentOptions: {
@@ -73,7 +79,7 @@ export const config: VendureConfig = {
         }),
         AdminUiPlugin.init({
             route: 'admin',
-            port: 3002,
+            port: Number(process.env.PORT) + 2,
         }),
     ],
 };
