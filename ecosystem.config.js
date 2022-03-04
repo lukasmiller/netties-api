@@ -2,15 +2,11 @@ module.exports = {
   apps : [
     {
       name: "server",
-      script: 'dist\\index.js',
-      instances : "max",
-      exec_mode : "cluster"
+      script: 'dist/index.js'
     },
     {
       name: "worker",
-      script: 'dist\\index-worker.js',
-      instances : "max",  
-      exec_mode : "cluster"
+      script: 'dist/index-worker.js'
     }
   ]
 };
